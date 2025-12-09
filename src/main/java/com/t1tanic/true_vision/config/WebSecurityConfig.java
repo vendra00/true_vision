@@ -16,7 +16,7 @@ public class WebSecurityConfig {
      * to the registration endpoint.
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
                 // 1. Disable CSRF (Common for stateless REST APIs)
                 .csrf(AbstractHttpConfigurer::disable)
