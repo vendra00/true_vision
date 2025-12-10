@@ -1,9 +1,8 @@
 package com.t1tanic.true_vision.service;
 
 import com.t1tanic.true_vision.dto.UserRegistrationRequest;
+import com.t1tanic.true_vision.dto.UserUpdateRequest;
 import com.t1tanic.true_vision.model.AppUser;
-import com.t1tanic.true_vision.model.AppUserAddress;
-import com.t1tanic.true_vision.model.AppUserBasicInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +35,7 @@ public interface AppUserService {
      * Updates an existing user's basic or address information.
      * NOTE: This will require a specific DTO for update requests later.
      */
-    AppUser updateUserInfo(UUID id, AppUserBasicInfo basicInfo, AppUserAddress addressInfo);
+    AppUser updateUserInfo(UUID id, UserUpdateRequest request);
 
     /**
      * Deletes a user permanently based on their UUID.

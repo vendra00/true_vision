@@ -26,6 +26,7 @@ public class WebSecurityConfig {
                         // Allow POST requests to your registration endpoint without authentication
                         .requestMatchers("/api/v1/users/register").permitAll()
                         .requestMatchers("/api/v1/users").permitAll()
+                        .requestMatchers("/api/v1/users/**").permitAll()
                         // Require authentication for any other request (good default security)
                         .anyRequest().authenticated()
                 );

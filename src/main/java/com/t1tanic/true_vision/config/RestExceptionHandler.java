@@ -1,23 +1,22 @@
 package com.t1tanic.true_vision.config;
 
 import com.t1tanic.true_vision.dto.UserRegistrationResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Global handler for REST exceptions across all controllers.
  * Centralizes exception logic to keep controllers clean.
  */
+@Slf4j
 @ControllerAdvice(annotations = RestController.class) // Applies to all classes annotated with @RestController
 public class RestExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     /**
      * Handles the IllegalStateException, typically used for business logic errors
@@ -72,5 +71,27 @@ public class RestExceptionHandler {
                 "An unexpected internal error occurred."
         );
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); // 500
+    }
+
+    /**
+     * Handles ResponseStatusException thrown directly from controllers (e.g., 404 Not Found).
+     * This ensures correct status codes are maintained instead of defaulting to 500.
+     */
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<UserRegistrationResponse> handleResponseStatusException(ResponseStatusException ex) {
+        // Extract the original status and reason
+        HttpStatus status = (HttpStatus) ex.getStatusCode();
+        String reason = ex.getReason() != null ? ex.getReason() : "Resource error.";
+
+        log.warn("REST API Status Error ({}): {}", status, reason);
+
+        // Map the exception to the standard response DTO
+        UserRegistrationResponse response = new UserRegistrationResponse(
+                null,
+                "FAILURE",
+                reason
+        );
+        // Return the original HTTP status code
+        return new ResponseEntity<>(response, status);
     }
 }

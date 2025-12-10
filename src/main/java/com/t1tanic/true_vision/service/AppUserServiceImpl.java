@@ -1,6 +1,7 @@
 package com.t1tanic.true_vision.service;
 
 import com.t1tanic.true_vision.dto.UserRegistrationRequest;
+import com.t1tanic.true_vision.dto.UserUpdateRequest;
 import com.t1tanic.true_vision.model.AppUser;
 import com.t1tanic.true_vision.model.AppUserAddress;
 import com.t1tanic.true_vision.model.AppUserBasicInfo;
@@ -74,7 +75,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public Optional<AppUser> findUserById(UUID id) {
-        return Optional.empty();
+        return userRepository.findById(id);
     }
 
     @Override
@@ -84,12 +85,69 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser updateUserInfo(UUID id, AppUserBasicInfo basicInfo, AppUserAddress addressInfo) {
-        return null;
+    @Transactional
+    public AppUser updateUserInfo(UUID id, UserUpdateRequest request) {
+
+        log.info("updateUserInfo - Starting comprehensive update for user ID: {}", id);
+
+        // 1. Find the existing user
+        AppUser existingUser = userRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("updateUserInfo - Update failed: User not found with ID: {}", id);
+                    // Throwing IllegalStateException is caught by the RestExceptionHandler (409 Conflict)
+                    return new IllegalStateException("User not found with ID: " + id);
+                });
+
+        // 2. Map DTO fields to new embedded objects
+
+        // A. Update Email Info
+        // Note: We don't change the email verified status automatically here.
+        AppUserEmail updatedEmailInfo = new AppUserEmail(request.email());
+        updatedEmailInfo.setEmailVerified(existingUser.getEmailInfo().isEmailVerified()); // Preserve verification status
+
+        // B. Update Basic Info (demographics and PII)
+        AppUserBasicInfo updatedBasicInfo = new AppUserBasicInfo(
+                request.firstName(),
+                request.middleName(),
+                request.lastName(),
+                request.gender(),
+                request.dob(),
+                request.nationality(),
+                request.placeOfBirth(),
+                request.ageRange()
+        );
+
+        // C. Update Address Info
+        AppUserAddress updatedAddressInfo = new AppUserAddress(
+                request.street(),
+                request.city(),
+                request.state(),
+                request.postalCode(),
+                request.country(),
+                request.cityDistrict()
+        );
+
+        // 3. Apply updates to the existing entity
+        existingUser.setEmailInfo(updatedEmailInfo);
+        existingUser.setBasicInfo(updatedBasicInfo);
+        existingUser.setAddressInfo(updatedAddressInfo);
+
+        // 4. Save the entity (JPA Auditing updates 'updatedAt')
+        log.info("updateUserInfo - User ID {} successfully updated. Saving changes.", id);
+        return userRepository.save(existingUser);
     }
 
     @Override
+    @Transactional
     public void deleteUser(UUID id) {
+        log.info("deleteUser - Attempting to delete user with ID: {}", id);
 
+        if (!userRepository.existsById(id)) {
+            log.warn("deleteUser - Deletion failed: User not found with ID: {}", id);
+            throw new IllegalStateException("User not found with ID: " + id);
+        }
+
+        userRepository.deleteById(id);
+        log.info("deleteUser - User successfully deleted with ID: {}", id);
     }
 }
