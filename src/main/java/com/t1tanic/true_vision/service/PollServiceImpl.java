@@ -7,6 +7,8 @@ import com.t1tanic.true_vision.model.poll.*;
 import com.t1tanic.true_vision.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,37 +25,47 @@ public class PollServiceImpl implements PollService {
     private final PollOptionRepository optionRepository;
     private final PollVoteRepository voteRepository;
     private final AppUserRepository userRepository;
+    private final MessageSource messageSource;
 
     @Override
     @Transactional
     public PollVote castVote(UUID pollId, UUID optionId, UUID userId) {
         log.info("Attempting to cast vote. User: {}, Poll: {}", userId, pollId);
 
-        // 1. SECURITY: Check if user already voted in this poll
+        // Get current locale (automatically resolved from Accept-Language header)
+        var locale = LocaleContextHolder.getLocale();
+
+        // 1. SECURITY
         if (voteRepository.existsByPollIdAndAppUserId(pollId, userId)) {
-            log.warn("Security Alert: User {} attempted to vote twice in poll {}", userId, pollId);
-            throw new IllegalStateException("You have already participated in this poll.");
+            throw new IllegalStateException(messageSource.getMessage("vote.duplicate", null, locale));
         }
 
-        // 2. VALIDATION: Fetch User, Poll, and Option
-        AppUser user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found."));
-        Poll poll = pollRepository.findById(pollId).orElseThrow(() -> new IllegalStateException("Poll not found."));
-        PollOption option = optionRepository.findById(optionId).orElseThrow(() -> new IllegalStateException("Invalid option chosen."));
+        // 2. VALIDATION: Check Poll and Dates first
+        Poll poll = pollRepository.findById(pollId)
+                .orElseThrow(() -> new IllegalStateException(messageSource.getMessage("poll.not.found", null, locale)));
+
         Instant now = Instant.now();
 
-        // Check if it's too early
         if (poll.getStartDate() != null && now.isBefore(poll.getStartDate())) {
-            throw new IllegalStateException("This poll has not started yet. It opens on: " + poll.getStartDate());
+            String msg = messageSource.getMessage("poll.too.early", new Object[]{poll.getStartDate()}, locale);
+            throw new IllegalStateException(msg);
         }
 
-        // Check if it's too late
         if (poll.getEndDate() != null && now.isAfter(poll.getEndDate())) {
-            poll.setStatus(PollStatus.CLOSED); // Auto-close if we detect it's past due
+            poll.setStatus(PollStatus.CLOSED);
             pollRepository.save(poll);
-            throw new IllegalStateException("This poll is now closed. Participation ended on: " + poll.getEndDate());
+            String msg = messageSource.getMessage("poll.too.late", new Object[]{poll.getEndDate()}, locale);
+            throw new IllegalStateException(msg);
         }
 
-        // 3. PERSISTENCE: Save the unique vote
+        // Fetch User and Option
+        AppUser user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException(messageSource.getMessage("user.not.found", null, locale)));
+
+        PollOption option = optionRepository.findById(optionId)
+                .orElseThrow(() -> new IllegalStateException(messageSource.getMessage("option.invalid", null, locale)));
+
+        // 3. PERSISTENCE
         PollVote vote = new PollVote(user, poll, option);
         return voteRepository.save(vote);
     }
