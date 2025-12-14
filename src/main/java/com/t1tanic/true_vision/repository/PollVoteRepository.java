@@ -70,4 +70,14 @@ public interface PollVoteRepository extends JpaRepository<PollVote, UUID> {
      */
     @Query("SELECT v.appUser.basicInfo.ageRange, COUNT(v) FROM PollVote v WHERE v.poll.id = :pollId GROUP BY v.appUser.basicInfo.ageRange")
     List<Object[]> countTotalVotesByAgeRange(@Param("pollId") UUID pollId);
+
+    /**
+     * Groups votes by the hour they were cast for a specific poll.
+     * Returns a list of arrays: [Integer hour, Long count]
+     */
+    @Query("SELECT FUNCTION('HOUR', v.voteTimestamp), COUNT(v) " +
+            "FROM PollVote v WHERE v.poll.id = :pollId " +
+            "GROUP BY FUNCTION('HOUR', v.voteTimestamp) " +
+            "ORDER BY FUNCTION('HOUR', v.voteTimestamp) ASC")
+    List<Object[]> countVotesByHour(@Param("pollId") UUID pollId);
 }

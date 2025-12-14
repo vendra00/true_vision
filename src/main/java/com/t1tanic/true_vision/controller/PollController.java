@@ -39,6 +39,7 @@ public class PollController {
      */
     @GetMapping("/active")
     public ResponseEntity<List<PollResponse>> getActivePolls() {
+        log.info("API Request: Get active polls");
         List<PollResponse> responses = pollService.findAllActivePolls().stream().map(PollResponse::fromEntity).toList();
         return ResponseEntity.ok(responses);
     }

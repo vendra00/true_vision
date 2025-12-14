@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -58,5 +59,15 @@ public class AnalysisController {
     public ResponseEntity<PollResultResponse> getByAgeRange(@PathVariable UUID pollId, @RequestParam AgeRange ageRange) {
         log.info("API Request: Results for poll {} for age range {}", pollId, ageRange);
         return ResponseEntity.ok(analysisService.getResultsByAgeRange(pollId, ageRange));
+    }
+
+    /**
+     * Returns a map of participation counts for each hour of the day (0-23).
+     * Useful for visualizing peak engagement times.
+     */
+    @GetMapping("/polls/{pollId}/heatmap")
+    public ResponseEntity<Map<Integer, Long>> getHeatmap(@PathVariable UUID pollId) {
+        log.info("API Request: Hourly heatmap for poll {}", pollId);
+        return ResponseEntity.ok(analysisService.getParticipationHeatmap(pollId));
     }
 }

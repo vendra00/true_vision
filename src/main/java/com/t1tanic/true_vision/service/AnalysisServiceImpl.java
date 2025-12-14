@@ -29,10 +29,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Transactional(readOnly = true)
     public PollResultResponse getResultsByDistrict(UUID pollId, CityDistrict district) {
         log.info("Generating demographic report for District: {}", district);
-
-        Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> new IllegalStateException("Poll not found."));
-
+        Poll poll = pollRepository.findById(pollId).orElseThrow(() -> new IllegalStateException("Poll not found."));
         List<PollResultResponse.OptionCount> optionCounts = poll.getOptions().stream()
                 .map(option -> new PollResultResponse.OptionCount(
                         option.getId(),
@@ -40,11 +37,8 @@ public class AnalysisServiceImpl implements AnalysisService {
                         voteRepository.countByOptionAndDistrict(option.getId(), district)
                 ))
                 .toList();
-
         return new PollResultResponse(
-                poll.getId(),
-                poll.getTitle() + " - " + district,
-                optionCounts,
+                poll.getId(), poll.getTitle() + " - " + district, optionCounts,
                 optionCounts.stream().mapToLong(PollResultResponse.OptionCount::count).sum()
         );
     }
@@ -53,9 +47,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Transactional(readOnly = true)
     public PollResultResponse getResultsByAgeRange(UUID pollId, AgeRange ageRange) {
         log.info("Analysis - Generating demographic report for Age Range: {}", ageRange);
-
-        Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> new IllegalStateException("Poll not found."));
+        Poll poll = pollRepository.findById(pollId).orElseThrow(() -> new IllegalStateException("Poll not found."));
 
         // Map each option to its count, filtered by age range
         List<PollResultResponse.OptionCount> optionCounts = poll.getOptions().stream()
@@ -66,11 +58,8 @@ public class AnalysisServiceImpl implements AnalysisService {
                 ))
                 .toList();
 
-        return new PollResultResponse(
-                poll.getId(),
-                poll.getTitle() + " (Age Analysis: " + ageRange + ")",
-                optionCounts,
-                optionCounts.stream().mapToLong(PollResultResponse.OptionCount::count).sum()
+        return new PollResultResponse(poll.getId(), poll.getTitle() + " (Age Analysis: " + ageRange + ")",
+                optionCounts, optionCounts.stream().mapToLong(PollResultResponse.OptionCount::count).sum()
         );
     }
 
@@ -78,10 +67,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Transactional(readOnly = true)
     public PollResultResponse getGlobalResults(UUID pollId) {
         log.info("Analysis - Generating global summary for Poll: {}", pollId);
-
-        Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> new IllegalStateException("Poll not found."));
-
+        Poll poll = pollRepository.findById(pollId).orElseThrow(() -> new IllegalStateException("Poll not found."));
         // Standard total tally across all demographics
         List<PollResultResponse.OptionCount> optionCounts = poll.getOptions().stream()
                 .map(option -> new PollResultResponse.OptionCount(
@@ -90,11 +76,7 @@ public class AnalysisServiceImpl implements AnalysisService {
                         voteRepository.countByChosenOptionId(option.getId())
                 ))
                 .toList();
-
-        return new PollResultResponse(
-                poll.getId(),
-                poll.getTitle() + " (Global Summary)",
-                optionCounts,
+        return new PollResultResponse(poll.getId(), poll.getTitle() + " (Global Summary)", optionCounts,
                 optionCounts.stream().mapToLong(PollResultResponse.OptionCount::count).sum()
         );
     }
@@ -102,9 +84,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     @Transactional(readOnly = true)
     public PollDashboardResponse getPollDashboard(UUID pollId) {
-        Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> new IllegalStateException("Poll not found."));
-
+        Poll poll = pollRepository.findById(pollId).orElseThrow(() -> new IllegalStateException("Poll not found."));
         // Convert List<Object[]> from repository into clean Maps
         Map<CityDistrict, Long> districtMap = voteRepository.countTotalVotesByDistrict(pollId)
                 .stream().collect(Collectors.toMap(obj -> (CityDistrict)obj[0], obj -> (Long)obj[1]));
@@ -112,13 +92,31 @@ public class AnalysisServiceImpl implements AnalysisService {
         Map<AgeRange, Long> ageMap = voteRepository.countTotalVotesByAgeRange(pollId)
                 .stream().collect(Collectors.toMap(obj -> (AgeRange)obj[0], obj -> (Long)obj[1]));
 
-        return new PollDashboardResponse(
-                poll.getId(),
-                poll.getTitle(),
-                voteRepository.countByPollId(pollId), // You'll need this simple count method too
+        return new PollDashboardResponse(poll.getId(), poll.getTitle(), voteRepository.countByPollId(pollId), // You'll need this simple count method too
                 districtMap,
                 ageMap
         );
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Map<Integer, Long> getParticipationHeatmap(UUID pollId) {
+        log.info("Generating participation heatmap for poll: {}", pollId);
+
+        // Initialize a map for all 24 hours with 0 votes
+        Map<Integer, Long> hourlyHeatmap = new java.util.TreeMap<>();
+        for (int i = 0; i < 24; i++) {
+            hourlyHeatmap.put(i, 0L);
+        }
+
+        // Populate with real data from the repository
+        List<Object[]> results = voteRepository.countVotesByHour(pollId);
+        for (Object[] row : results) {
+            Integer hour = (Integer) row[0];
+            Long count = (Long) row[1];
+            hourlyHeatmap.put(hour, count);
+        }
+
+        return hourlyHeatmap;
+    }
 }

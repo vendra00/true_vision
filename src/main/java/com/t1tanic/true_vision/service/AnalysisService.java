@@ -6,6 +6,7 @@ import com.t1tanic.true_vision.dto.poll.PollResultResponse;
 import com.t1tanic.true_vision.enums.AgeRange;
 import com.t1tanic.true_vision.enums.CityDistrict;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -47,4 +48,11 @@ public interface AnalysisService {
      * @return A complete dashboard object for data visualization.
      */
     PollDashboardResponse getPollDashboard(UUID pollId);
+
+    /**
+     * Generates a heatmap of participation across all districts.
+     * @param pollId The unique identifier of the poll.
+     * @return A mapping of City Districts to their respective vote counts.
+     */
+    Map<Integer, Long> getParticipationHeatmap(UUID pollId);
 }
