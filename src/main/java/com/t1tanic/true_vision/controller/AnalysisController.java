@@ -78,6 +78,7 @@ public class AnalysisController {
      */
     @GetMapping("/polls/{pollId}/summary")
     public ResponseEntity<PollGlobalStats> getSummary(@PathVariable UUID pollId) {
+        log.info("API Request: Summary for poll {}", pollId);
         return ResponseEntity.ok(analysisService.getGlobalStatsSummary(pollId));
     }
 }
