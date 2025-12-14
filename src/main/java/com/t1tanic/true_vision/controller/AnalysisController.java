@@ -1,6 +1,7 @@
 package com.t1tanic.true_vision.controller;
 
 import com.t1tanic.true_vision.dto.poll.PollDashboardResponse;
+import com.t1tanic.true_vision.dto.poll.PollGlobalStats;
 import com.t1tanic.true_vision.dto.poll.PollResultResponse;
 import com.t1tanic.true_vision.enums.AgeRange;
 import com.t1tanic.true_vision.enums.CityDistrict;
@@ -69,5 +70,14 @@ public class AnalysisController {
     public ResponseEntity<Map<Integer, Long>> getHeatmap(@PathVariable UUID pollId) {
         log.info("API Request: Hourly heatmap for poll {}", pollId);
         return ResponseEntity.ok(analysisService.getParticipationHeatmap(pollId));
+    }
+
+    /**
+     * Provides a summary of global statistics for the poll.
+     * GET /api/v1/analysis/polls/{pollId}/summary
+     */
+    @GetMapping("/polls/{pollId}/summary")
+    public ResponseEntity<PollGlobalStats> getSummary(@PathVariable UUID pollId) {
+        return ResponseEntity.ok(analysisService.getGlobalStatsSummary(pollId));
     }
 }

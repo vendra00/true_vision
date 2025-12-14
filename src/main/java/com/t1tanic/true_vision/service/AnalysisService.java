@@ -2,6 +2,7 @@ package com.t1tanic.true_vision.service;
 
 
 import com.t1tanic.true_vision.dto.poll.PollDashboardResponse;
+import com.t1tanic.true_vision.dto.poll.PollGlobalStats;
 import com.t1tanic.true_vision.dto.poll.PollResultResponse;
 import com.t1tanic.true_vision.enums.AgeRange;
 import com.t1tanic.true_vision.enums.CityDistrict;
@@ -55,4 +56,11 @@ public interface AnalysisService {
      * @return A mapping of City Districts to their respective vote counts.
      */
     Map<Integer, Long> getParticipationHeatmap(UUID pollId);
+
+    /**
+     * Summarizes global statistics for the specified poll.
+     * @param pollId The unique identifier of the poll.
+     * @return An object containing key global statistics.
+     */
+    PollGlobalStats getGlobalStatsSummary(UUID pollId);
 }

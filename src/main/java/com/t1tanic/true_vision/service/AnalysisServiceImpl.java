@@ -1,6 +1,7 @@
 package com.t1tanic.true_vision.service;
 
 import com.t1tanic.true_vision.dto.poll.PollDashboardResponse;
+import com.t1tanic.true_vision.dto.poll.PollGlobalStats;
 import com.t1tanic.true_vision.dto.poll.PollResultResponse;
 import com.t1tanic.true_vision.enums.AgeRange;
 import com.t1tanic.true_vision.enums.CityDistrict;
@@ -118,5 +119,47 @@ public class AnalysisServiceImpl implements AnalysisService {
         }
 
         return hourlyHeatmap;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PollGlobalStats getGlobalStatsSummary(UUID pollId) {
+        log.info("Generating Global Stats Summary for poll: {}", pollId);
+
+        // 1. Get existing data
+        PollResultResponse results = this.getGlobalResults(pollId);
+        PollDashboardResponse dashboard = this.getPollDashboard(pollId);
+        Map<Integer, Long> heatmap = this.getParticipationHeatmap(pollId);
+
+        // 2. Calculate "The Best/Most"
+        String winner = results.results().stream()
+                .max(java.util.Comparator.comparing(PollResultResponse.OptionCount::count))
+                .map(PollResultResponse.OptionCount::optionText)
+                .orElse("No votes yet");
+
+        CityDistrict topDistrict = dashboard.votesByDistrict().entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
+
+        AgeRange topAge = dashboard.votesByAgeGroup().entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
+
+        int peakHour = heatmap.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(0);
+
+        return new PollGlobalStats(
+                pollId,
+                results.pollTitle(),
+                winner,
+                topDistrict,
+                topAge,
+                peakHour,
+                results.totalVotes()
+        );
     }
 }
