@@ -1,8 +1,8 @@
 package com.t1tanic.true_vision.service;
 
-import com.t1tanic.true_vision.dto.UserRegistrationRequest;
-import com.t1tanic.true_vision.dto.UserUpdateRequest;
-import com.t1tanic.true_vision.model.AppUser;
+import com.t1tanic.true_vision.dto.app_user.UserRegistrationRequest;
+import com.t1tanic.true_vision.dto.app_user.UserUpdateRequest;
+import com.t1tanic.true_vision.model.app_user.AppUser;
 
 import java.util.List;
 import java.util.Optional;

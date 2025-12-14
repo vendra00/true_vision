@@ -1,4 +1,4 @@
-package com.t1tanic.true_vision.dto;
+package com.t1tanic.true_vision.dto.app_user;
 
 import com.t1tanic.true_vision.enums.*;
 import com.t1tanic.true_vision.model.RegexConstants;

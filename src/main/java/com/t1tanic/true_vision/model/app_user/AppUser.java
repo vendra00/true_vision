@@ -1,5 +1,6 @@
-package com.t1tanic.true_vision.model;
+package com.t1tanic.true_vision.model.app_user;
 
+import com.t1tanic.true_vision.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "app_users")
-public class AppUser extends BaseEntity{
+public class AppUser extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)

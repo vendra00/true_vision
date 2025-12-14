@@ -1,4 +1,4 @@
-package com.t1tanic.true_vision.model;
+package com.t1tanic.true_vision.model.app_user;
 
 import com.t1tanic.true_vision.enums.AgeRange;
 import com.t1tanic.true_vision.enums.Country;

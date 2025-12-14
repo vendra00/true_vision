@@ -1,6 +1,6 @@
 package com.t1tanic.true_vision.config;
 
-import com.t1tanic.true_vision.dto.UserRegistrationResponse;
+import com.t1tanic.true_vision.dto.app_user.UserRegistrationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

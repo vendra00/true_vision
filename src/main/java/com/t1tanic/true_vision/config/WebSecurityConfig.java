@@ -27,6 +27,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/v1/users/register").permitAll()
                         .requestMatchers("/api/v1/users").permitAll()
                         .requestMatchers("/api/v1/users/**").permitAll()
+                        .requestMatchers("/api/v1/polls/**").permitAll()
+                        .requestMatchers("/api/v1/analysis/**").permitAll()
                         // Require authentication for any other request (good default security)
                         .anyRequest().authenticated()
                 );

@@ -1,4 +1,4 @@
-package com.t1tanic.true_vision.model;
+package com.t1tanic.true_vision.model.app_user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

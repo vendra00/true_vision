@@ -1,4 +1,4 @@
-package com.t1tanic.true_vision.dto;
+package com.t1tanic.true_vision.dto.app_user;
 
 import java.util.UUID;
 

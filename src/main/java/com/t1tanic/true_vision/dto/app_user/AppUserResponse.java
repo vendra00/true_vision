@@ -1,6 +1,10 @@
-package com.t1tanic.true_vision.dto;
+package com.t1tanic.true_vision.dto.app_user;
 
-import com.t1tanic.true_vision.model.*;
+import com.t1tanic.true_vision.model.app_user.AppUser;
+import com.t1tanic.true_vision.model.app_user.AppUserAddress;
+import com.t1tanic.true_vision.model.app_user.AppUserBasicInfo;
+import com.t1tanic.true_vision.model.app_user.AppUserEmail;
+
 import java.time.Instant;
 import java.util.UUID;
 

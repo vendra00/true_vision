@@ -1,10 +1,10 @@
 package com.t1tanic.true_vision.controller;
 
-import com.t1tanic.true_vision.dto.AppUserResponse;
-import com.t1tanic.true_vision.dto.UserRegistrationRequest;
-import com.t1tanic.true_vision.dto.UserRegistrationResponse; // We will create this DTO next
-import com.t1tanic.true_vision.dto.UserUpdateRequest;
-import com.t1tanic.true_vision.model.AppUser;
+import com.t1tanic.true_vision.dto.app_user.AppUserResponse;
+import com.t1tanic.true_vision.dto.app_user.UserRegistrationRequest;
+import com.t1tanic.true_vision.dto.app_user.UserRegistrationResponse; // We will create this DTO next
+import com.t1tanic.true_vision.dto.app_user.UserUpdateRequest;
+import com.t1tanic.true_vision.model.app_user.AppUser;
 import com.t1tanic.true_vision.service.AppUserService; // Use the interface
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -111,7 +111,6 @@ public class UserController {
         log.info("API Request received to update user ID: {}", id);
         AppUser updatedUser = userService.updateUserInfo(id, request);
         log.info("User successfully updated with ID: {}", id);
-        // Map the updated entity to the safe DTO
         return new ResponseEntity<>(AppUserResponse.fromEntity(updatedUser), HttpStatus.OK);
     }
 

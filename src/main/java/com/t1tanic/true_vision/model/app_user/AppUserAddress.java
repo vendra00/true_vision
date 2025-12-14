@@ -1,4 +1,4 @@
-package com.t1tanic.true_vision.model;
+package com.t1tanic.true_vision.model.app_user;
 
 import com.t1tanic.true_vision.enums.City;
 import com.t1tanic.true_vision.enums.CityDistrict;

@@ -1,6 +1,6 @@
 package com.t1tanic.true_vision.repository;
 
-import com.t1tanic.true_vision.model.AppUser;
+import com.t1tanic.true_vision.model.app_user.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
