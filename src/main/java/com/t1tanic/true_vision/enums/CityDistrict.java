@@ -2,6 +2,9 @@ package com.t1tanic.true_vision.enums;
 
 import lombok.Getter;
 
+/**
+ * Enumeration for the districts of a city.
+ */
 @Getter
 public enum CityDistrict {
     CIUTAT_VELLA("Ciutat Vella"),

@@ -4,6 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/**
+ * Main application class for True Vision.
+ *
+ * @author Gabriel Vendramini
+ */
 @EnableScheduling
 @SpringBootApplication
 public class TrueVisionApplication {

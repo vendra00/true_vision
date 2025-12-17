@@ -11,6 +11,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
+/**
+ * Base entity class that provides auditing fields for creation and last update timestamps.
+ * Other entity classes can extend this class to inherit these common fields.
+ */
 @Getter
 @Setter
 @MappedSuperclass // Tells JPA not to create a table for this class, but to include its fields in subclasses

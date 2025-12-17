@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ * Repository interface for managing PollOption entities.
+ * Extends JpaRepository to provide CRUD operations and custom query methods.
+ */
 @Repository
-public interface PollOptionRepository extends JpaRepository<PollOption, UUID> {
-
-}
+public interface PollOptionRepository extends JpaRepository<PollOption, UUID> {}

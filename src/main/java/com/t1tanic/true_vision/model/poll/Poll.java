@@ -11,6 +11,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Represents a poll with its details, options, and votes.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

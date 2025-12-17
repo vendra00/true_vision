@@ -11,6 +11,11 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import java.util.Locale;
 
+/**
+ * Configuration class for Internationalization (i18n) settings.
+ *
+ * @author Gabriel Vendramini
+ */
 @Configuration
 public class I18nConfig {
 

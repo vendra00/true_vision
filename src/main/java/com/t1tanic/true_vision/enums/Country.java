@@ -2,6 +2,9 @@ package com.t1tanic.true_vision.enums;
 
 import lombok.Getter;
 
+/**
+ * Enumeration for different countries.
+ */
 @Getter
 public enum Country {
     SPAIN("Spain"),

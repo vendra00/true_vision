@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Represents a vote cast by an application user in a poll.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

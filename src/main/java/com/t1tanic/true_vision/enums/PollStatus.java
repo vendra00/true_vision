@@ -2,6 +2,9 @@ package com.t1tanic.true_vision.enums;
 
 import lombok.Getter;
 
+/**
+ * Enumeration for different poll statuses.
+ */
 @Getter
 public enum PollStatus {
     ACTIVE("Active"),

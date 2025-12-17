@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Repository interface for managing Poll entities.
+ * Extends JpaRepository to provide CRUD operations and custom query methods.
+ */
 @Repository
 public interface PollRepository extends JpaRepository<Poll , UUID> {
 

@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * REST Controller for managing polls, including creation, voting, and result retrieval.
+ * <p>
+ * This controller handles all poll-related API endpoints under the base path
+ * {@code /api/v1/polls}. It delegates business logic to the {@code PollService}
+ * and focuses on request validation, response formatting, and exception handling.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/polls")

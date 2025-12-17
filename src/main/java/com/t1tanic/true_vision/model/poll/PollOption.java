@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+/**
+ * Represents an option within a poll.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

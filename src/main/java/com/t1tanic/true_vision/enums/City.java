@@ -2,6 +2,9 @@ package com.t1tanic.true_vision.enums;
 
 import lombok.Getter;
 
+/**
+ * Enumeration for cities in Catalonia, Spain.
+ */
 @Getter
 public enum City {
     // Cities in Catalonia, Spain

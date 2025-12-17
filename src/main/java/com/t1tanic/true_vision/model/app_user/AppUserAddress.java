@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Represents the address information of an application user.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

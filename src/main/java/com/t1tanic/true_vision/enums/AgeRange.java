@@ -2,6 +2,9 @@ package com.t1tanic.true_vision.enums;
 
 import lombok.Getter;
 
+/**
+ * Enumeration for different age ranges.
+ */
 @Getter
 public enum AgeRange {
     A_18_25("18-25"),

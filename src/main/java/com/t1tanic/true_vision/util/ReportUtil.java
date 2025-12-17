@@ -16,6 +16,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class for generating reports in CSV and Excel formats.
+ *
+ * @author Gabriel Vendramini
+ */
 @Slf4j
 @Component
 public class ReportUtil {

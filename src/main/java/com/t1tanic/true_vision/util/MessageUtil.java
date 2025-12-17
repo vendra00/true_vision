@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
+/**
+ * Utility class for resolving internationalized messages.
+ *
+ * @author Gabriel Vendramini
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

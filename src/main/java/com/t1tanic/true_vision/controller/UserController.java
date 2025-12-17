@@ -17,9 +17,16 @@ import org.springframework.web.util.HtmlUtils;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * REST Controller for managing user registration, retrieval, update, and deletion.
+ * <p>
+ * This controller handles all user-related API endpoints under the base path
+ * {@code /api/v1/users}. It delegates business logic to the {@code AppUserService}
+ * and focuses on request validation, response formatting, and exception handling.
+ */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/users") // Base path for all user-related endpoints
+@RequestMapping("/api/v1/users")
 public class UserController {
     private final AppUserService userService;
 

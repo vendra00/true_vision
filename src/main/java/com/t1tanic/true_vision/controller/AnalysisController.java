@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * REST Controller for analyzing poll results.
+ * This controller provides endpoints to retrieve various analyses of poll data,
+ * including global results, district-specific results, age range breakdowns,
+ * participation heatmaps, and comprehensive dashboards.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/analysis")

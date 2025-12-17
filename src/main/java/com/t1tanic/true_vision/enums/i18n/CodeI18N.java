@@ -2,6 +2,9 @@ package com.t1tanic.true_vision.enums.i18n;
 
 import lombok.Getter;
 
+/**
+ * Enumeration for supported internationalization (i18n) language codes.
+ */
 @Getter
 public enum CodeI18N {
     ENGLISH("en"),

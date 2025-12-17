@@ -14,6 +14,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * Represents the basic personal information of an application user.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

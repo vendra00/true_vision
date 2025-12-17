@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.util.UUID;
 
+/**
+ * Represents an application user with personal and contact information.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

@@ -2,6 +2,9 @@ package com.t1tanic.true_vision.enums.i18n;
 
 import lombok.Getter;
 
+/**
+ * Enumeration for message keys used in internationalization (i18n).
+ */
 @Getter
 public enum MessagesI18N {
     POLL_CREATED("poll.created"),

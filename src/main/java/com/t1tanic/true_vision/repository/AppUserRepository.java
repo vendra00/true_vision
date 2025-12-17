@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ * Repository interface for managing AppUser entities.
+ * Extends JpaRepository to provide CRUD operations and custom query methods.
+ */
 @Repository
 public interface AppUserRepository extends JpaRepository<AppUser, UUID> {
 
